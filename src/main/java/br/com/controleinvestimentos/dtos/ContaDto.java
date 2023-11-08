@@ -1,5 +1,6 @@
 package br.com.controleinvestimentos.dtos;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 import java.math.BigDecimal;
@@ -13,7 +14,8 @@ public record ContaDto(
         @NotBlank
         String nome,
 
-        LocalDate dataDeCriacao,
+        @Email
+        String email,
 
         BigDecimal valorTotalInvestido
 ) {

@@ -17,12 +17,14 @@ public record ContaResponseDto(
 
         LocalDate dataDeCriacao,
 
+        String email,
+
         BigDecimal valorTotalInvestido,
 
         List<Investimento> investimentos
 ) {
     public ContaResponseDto (Conta conta){
-        this(conta.getId(), conta.getNome(), conta.getDataDeCriacao(), conta.getValorTotalInvestido(), conta.getInvestimentos());
+        this(conta.getId(), conta.getNome(), conta.getDataDeCriacao(), conta.getEmail(), conta.getValorTotalInvestido(), conta.getInvestimentos());
     }
 
 
