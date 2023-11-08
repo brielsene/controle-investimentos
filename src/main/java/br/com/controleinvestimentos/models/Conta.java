@@ -22,6 +22,7 @@ public class Conta {
     private Long id;
     private String nome;
     private LocalDate dataDeCriacao;
+    private String email;
 
     private BigDecimal valorTotalInvestido;
 
