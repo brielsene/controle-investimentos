@@ -3,6 +3,7 @@ package br.com.controleinvestimentos.services;
 import br.com.controleinvestimentos.dtos.InvestimentoDto;
 import br.com.controleinvestimentos.dtos.InvestimentoResponseDto;
 import br.com.controleinvestimentos.models.Conta;
+import br.com.controleinvestimentos.models.EmailModel;
 import br.com.controleinvestimentos.models.Investimento;
 import br.com.controleinvestimentos.repositorys.ContaRepository;
 import br.com.controleinvestimentos.repositorys.InvestimentoRepository;
@@ -21,6 +22,9 @@ public class InvestimentoService {
     @Autowired
     private ContaRepository contaRepository;
 
+    @Autowired
+    private EmailService emailService;
+
 
     public InvestimentoResponseDto criarInvestimento(InvestimentoDto investimentoDto){
         LocalDate now = LocalDate.now();
@@ -34,8 +38,21 @@ public class InvestimentoService {
             conta.setValorTotalInvestido(conta.getValorTotalInvestido().add(investimentoDto.valor()));
         }
         investimentoRepository.save(investimento);
+        emailService.sendEmail(sendEmail(investimento));
         InvestimentoResponseDto investimentoResponseDto = new InvestimentoResponseDto(investimento);
         return investimentoResponseDto;
+    }
+
+    private static EmailModel sendEmail(Investimento investimento) {
+        EmailModel emailModel = new EmailModel();
+        emailModel.setMessageBody("O investimento, no valor de: "+ investimento.getValor()
+        +", foi feito com sucesso \n" +
+                        "O seu valor total de investimento é: "+ investimento.getConta().getValorTotalInvestido()
+        );
+        emailModel.setEmailTo(investimento.getConta().getEmail());
+        emailModel.setSubject("Investimento feito com sucesso");
+        return emailModel;
+
     }
 
 }
